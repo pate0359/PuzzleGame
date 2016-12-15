@@ -13,6 +13,7 @@
 		1043E8DD1E02EF3B00C2F421 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1043E8DC1E02EF3B00C2F421 /* Assets.xcassets */; };
 		1043E8E01E02EF3B00C2F421 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1043E8DE1E02EF3B00C2F421 /* LaunchScreen.storyboard */; };
 		1043E8EB1E02EF3B00C2F421 /* PuzzleGameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1043E8EA1E02EF3B00C2F421 /* PuzzleGameTests.swift */; };
+		1043E8F81E030D2200C2F421 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1043E8F71E030D2200C2F421 /* AVFoundation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +37,7 @@
 		1043E8E61E02EF3B00C2F421 /* PuzzleGameTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PuzzleGameTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1043E8EA1E02EF3B00C2F421 /* PuzzleGameTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleGameTests.swift; sourceTree = "<group>"; };
 		1043E8EC1E02EF3B00C2F421 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1043E8F71E030D2200C2F421 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +45,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1043E8F81E030D2200C2F421 /* AVFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -62,6 +65,7 @@
 				1043E8D41E02EF3B00C2F421 /* PuzzleGame */,
 				1043E8E91E02EF3B00C2F421 /* PuzzleGameTests */,
 				1043E8D31E02EF3B00C2F421 /* Products */,
+				1043E8F61E030D2200C2F421 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -94,6 +98,14 @@
 				1043E8EC1E02EF3B00C2F421 /* Info.plist */,
 			);
 			path = PuzzleGameTests;
+			sourceTree = "<group>";
+		};
+		1043E8F61E030D2200C2F421 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1043E8F71E030D2200C2F421 /* AVFoundation.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
