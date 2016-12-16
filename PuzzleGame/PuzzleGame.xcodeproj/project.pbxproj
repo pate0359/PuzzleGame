@@ -14,6 +14,7 @@
 		1043E8E01E02EF3B00C2F421 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1043E8DE1E02EF3B00C2F421 /* LaunchScreen.storyboard */; };
 		1043E8EB1E02EF3B00C2F421 /* PuzzleGameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1043E8EA1E02EF3B00C2F421 /* PuzzleGameTests.swift */; };
 		1043E8F81E030D2200C2F421 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1043E8F71E030D2200C2F421 /* AVFoundation.framework */; };
+		1043E8FA1E03196400C2F421 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1043E8F91E03196400C2F421 /* Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +39,7 @@
 		1043E8EA1E02EF3B00C2F421 /* PuzzleGameTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleGameTests.swift; sourceTree = "<group>"; };
 		1043E8EC1E02EF3B00C2F421 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1043E8F71E030D2200C2F421 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		1043E8F91E03196400C2F421 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +85,7 @@
 			children = (
 				1043E8D51E02EF3B00C2F421 /* AppDelegate.swift */,
 				1043E8D71E02EF3B00C2F421 /* ViewController.swift */,
+				1043E8F91E03196400C2F421 /* Extensions.swift */,
 				1043E8D91E02EF3B00C2F421 /* Main.storyboard */,
 				1043E8DC1E02EF3B00C2F421 /* Assets.xcassets */,
 				1043E8DE1E02EF3B00C2F421 /* LaunchScreen.storyboard */,
@@ -212,6 +215,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1043E8D81E02EF3B00C2F421 /* ViewController.swift in Sources */,
+				1043E8FA1E03196400C2F421 /* Extensions.swift in Sources */,
 				1043E8D61E02EF3B00C2F421 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
