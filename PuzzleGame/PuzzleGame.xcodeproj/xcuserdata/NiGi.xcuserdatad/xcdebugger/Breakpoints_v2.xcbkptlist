@@ -10,13 +10,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PuzzleGame/ViewController.swift"
-            timestampString = "503590110.837944"
+            timestampString = "503688747.077037"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "72"
-            endingLineNumber = "72"
-            landmarkName = "createUI()"
-            landmarkType = "7">
+            startingLineNumber = "305"
+            endingLineNumber = "305"
+            landmarkName = "ViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -26,13 +26,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PuzzleGame/ViewController.swift"
-            timestampString = "503593295.641838"
+            timestampString = "503688747.077037"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "193"
-            endingLineNumber = "193"
-            landmarkName = "handleTap(recognizer:)"
-            landmarkType = "7">
+            startingLineNumber = "318"
+            endingLineNumber = "318"
+            landmarkName = "ViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -42,13 +42,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PuzzleGame/ViewController.swift"
-            timestampString = "503593832.086014"
+            timestampString = "503688747.077037"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "222"
-            endingLineNumber = "222"
-            landmarkName = "handleTap(recognizer:)"
-            landmarkType = "7">
+            startingLineNumber = "328"
+            endingLineNumber = "328"
+            landmarkName = "ViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -58,13 +58,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PuzzleGame/ViewController.swift"
-            timestampString = "503593832.086014"
+            timestampString = "503688747.077037"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "258"
-            endingLineNumber = "258"
-            landmarkName = "handleTap(recognizer:)"
-            landmarkType = "7">
+            startingLineNumber = "346"
+            endingLineNumber = "346"
+            landmarkName = "ViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -74,12 +74,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PuzzleGame/ViewController.swift"
-            timestampString = "503592254.690653"
+            timestampString = "503688747.077037"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "107"
-            endingLineNumber = "107"
-            landmarkName = "calculateNeighbours()"
+            startingLineNumber = "282"
+            endingLineNumber = "282"
+            landmarkName = "isWon()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
