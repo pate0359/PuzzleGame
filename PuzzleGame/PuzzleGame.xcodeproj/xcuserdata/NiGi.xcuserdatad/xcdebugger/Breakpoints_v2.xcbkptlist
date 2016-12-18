@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PuzzleGame/ViewController.swift"
-            timestampString = "503766204.774864"
+            timestampString = "503776874.419736"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "167"
-            endingLineNumber = "167"
+            startingLineNumber = "176"
+            endingLineNumber = "176"
             landmarkName = "handleTap(recognizer:)"
             landmarkType = "7">
          </BreakpointContent>

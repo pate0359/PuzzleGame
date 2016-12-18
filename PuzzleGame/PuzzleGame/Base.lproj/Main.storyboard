@@ -4,7 +4,6 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -23,6 +22,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fkP-NB-GnK">
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstAttribute="width" constant="343" id="jDE-4X-JT5"/>
                                     <constraint firstAttribute="width" secondItem="fkP-NB-GnK" secondAttribute="height" multiplier="1:1" id="wP3-Ae-rwa"/>
                                 </constraints>
                             </view>
@@ -32,19 +32,25 @@
                                     <action selector="resetGameClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="WMe-wn-TYm"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Puzzle Game" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pwk-yM-92j">
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="dWg-2Z-lUj" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="3q9-Dl-Q4W"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="dWg-2Z-lUj" secondAttribute="bottom" constant="44" id="JrR-M5-zOL"/>
-                            <constraint firstAttribute="leadingMargin" secondItem="fkP-NB-GnK" secondAttribute="leading" id="L1w-ox-RA5"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="fkP-NB-GnK" secondAttribute="trailing" id="fta-aY-eGT"/>
+                            <constraint firstItem="Pwk-yM-92j" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="59" id="OYM-JH-W0E"/>
+                            <constraint firstItem="Pwk-yM-92j" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="lAe-FZ-Tic"/>
                             <constraint firstItem="fkP-NB-GnK" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="oWK-2p-vpW"/>
                             <constraint firstItem="fkP-NB-GnK" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="w7O-2R-Gx8"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="viewBoard" destination="fkP-NB-GnK" id="KmM-gL-SIY"/>
+                        <outlet property="viewboardWidthConstraints" destination="jDE-4X-JT5" id="9rl-Z3-R3l"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

@@ -12,6 +12,7 @@ import AVFoundation
 class ViewController: UIViewController,UIGestureRecognizerDelegate {
 
     @IBOutlet var viewBoard: UIView!
+    @IBOutlet var viewboardWidthConstraints: NSLayoutConstraint!
     
     var tileWidth : CGFloat!
     var blankTileCenter : CGPoint!
@@ -63,10 +64,12 @@ class ViewController: UIViewController,UIGestureRecognizerDelegate {
         
         let puzzleImage = UIImage(named: "puzzle_image");
         if (puzzleImage == nil) { return nil}
-        //puzzleImage = imageWithImage(image: puzzleImage!)
         
         let arraCroppedImages : NSMutableArray = NSMutableArray()
         tileWidth = puzzleImage!.size.width as CGFloat / 2
+
+        // update view board width
+        viewboardWidthConstraints.constant = 4 * tileWidth
         
         for i in 0...3{
             for j in 0...3{
@@ -100,8 +103,8 @@ class ViewController: UIViewController,UIGestureRecognizerDelegate {
     // Create a board with the 15 tiles and shuffle them
     private func createUI(tileArray:NSArray) {
         
-        //Reset board
-        resetBoard()
+        let puzzleImage = UIImage(named: "puzzle_image");
+        if (puzzleImage == nil) { return }
         
         //Add time to viewboard
         var x : CGFloat = 0; var y : CGFloat = 0
@@ -511,9 +514,7 @@ class ViewController: UIViewController,UIGestureRecognizerDelegate {
     }
 }
 
-
 //MARK:- Touch events
-
 extension ViewController {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -625,7 +626,6 @@ extension ViewController {
                 }
             }
         }
-        
         super.touchesMoved(touches, with: event)
     }
     
