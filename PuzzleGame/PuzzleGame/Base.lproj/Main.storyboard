@@ -26,9 +26,17 @@
                                     <constraint firstAttribute="width" secondItem="fkP-NB-GnK" secondAttribute="height" multiplier="1:1" id="wP3-Ae-rwa"/>
                                 </constraints>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dWg-2Z-lUj">
+                                <state key="normal" title="Reset Game"/>
+                                <connections>
+                                    <action selector="resetGameClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="WMe-wn-TYm"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="dWg-2Z-lUj" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="3q9-Dl-Q4W"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="dWg-2Z-lUj" secondAttribute="bottom" constant="44" id="JrR-M5-zOL"/>
                             <constraint firstAttribute="leadingMargin" secondItem="fkP-NB-GnK" secondAttribute="leading" id="L1w-ox-RA5"/>
                             <constraint firstAttribute="trailingMargin" secondItem="fkP-NB-GnK" secondAttribute="trailing" id="fta-aY-eGT"/>
                             <constraint firstItem="fkP-NB-GnK" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="oWK-2p-vpW"/>

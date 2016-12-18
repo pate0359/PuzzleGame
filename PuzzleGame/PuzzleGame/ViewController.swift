@@ -13,27 +13,26 @@ class ViewController: UIViewController,UIGestureRecognizerDelegate {
 
     @IBOutlet var viewBoard: UIView!
     
-    private var tileWidth : CGFloat!
+    var tileWidth : CGFloat!
+    var blankTileCenter : CGPoint!
+
     private var blankTileInitialCenter : CGPoint!
-    private var blankTileCenter : CGPoint!
-    
-    
     private var arrayTileImages : NSArray!
     private var arrayTiles = NSMutableArray()
     private var arrayTileCenters = NSMutableArray()
     
-    //For saving initial tile centers
+    //To store initial tile centers to check win
     private var dictCentersForTile = [Int : AnyObject]()
     
     // Neighbour tiles of empty tile
-    private var leftTiles = NSMutableArray(capacity: 3)
-    private var rightTiles = NSMutableArray(capacity: 3)
-    private var topTiles = NSMutableArray(capacity: 3)
-    private var bottomTiles = NSMutableArray(capacity: 3)
+    var leftTiles = NSMutableArray(capacity: 3)
+    var rightTiles = NSMutableArray(capacity: 3)
+    var topTiles = NSMutableArray(capacity: 3)
+    var bottomTiles = NSMutableArray(capacity: 3)
     
-    private var touchbeginPoint : CGPoint!
+    //Touchended is not called sometimes due to tap gesture on tile. work around to saperate touches event and tap guesture event
+    var isMoving : Bool = false
 
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -41,15 +40,23 @@ class ViewController: UIViewController,UIGestureRecognizerDelegate {
         arrayTileImages = splitPuzzleImage();
         if arrayTileImages == nil || arrayTileImages?.count == 0 { return }
         
-        createUI(tileArray: arrayTileImages!)
+        //create tile board ui
+        resetBoard()
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    //MARK:- Action methods
+    @IBAction func resetGameClicked(_ sender: AnyObject) {
+        
+        //reset tile board
+        resetBoard()
+    }
 
-    //MARK:- Private Methods
+    //MARK:- Split tiles
     
     // Split puzzle image in 16 pieces
     private func splitPuzzleImage() -> NSMutableArray? {
@@ -73,7 +80,23 @@ class ViewController: UIViewController,UIGestureRecognizerDelegate {
         return arraCroppedImages
     }
     
-    //MARK:- UI Methods
+    //MARK:- UI methods
+    
+    //Reset tile board
+    private func resetBoard() {
+        
+        //Remove previous tiles
+        for item in viewBoard.subviews {
+            item.removeFromSuperview()
+        }
+        
+        arrayTiles.removeAllObjects()
+        arrayTileCenters.removeAllObjects()
+        
+        //create tile board ui
+        self.createUI(tileArray: self.arrayTileImages!)
+    }
+    
     // Create a board with the 15 tiles and shuffle them
     private func createUI(tileArray:NSArray) {
         
@@ -100,9 +123,11 @@ class ViewController: UIViewController,UIGestureRecognizerDelegate {
             //Add tap gesture
             let tap = UITapGestureRecognizer(target: self, action:#selector(self.handleTap(recognizer:)))
             tap.delegate = self
+            tap.delaysTouchesBegan = false
+            tap.delaysTouchesEnded = false
             tile.addGestureRecognizer(tap)
-            viewBoard.addSubview(tile)
             
+            viewBoard.addSubview(tile)
             arrayTiles.add(tile)
             arrayTileCenters.add(tile.center)
             
@@ -117,9 +142,9 @@ class ViewController: UIViewController,UIGestureRecognizerDelegate {
         (arrayTiles[random] as! UIImageView).removeFromSuperview()
         arrayTiles.removeObject(at: random)
         
+        //Initialize blank tile center
         blankTileCenter = arrayTileCenters[random] as! CGPoint
         blankTileInitialCenter = arrayTileCenters[random] as! CGPoint
-        
         arrayTileCenters.removeObject(at: random)
         
         //Randomize tiles
@@ -134,7 +159,6 @@ class ViewController: UIViewController,UIGestureRecognizerDelegate {
             
             let item = item as! UIImageView
             let random : Int = Int(arc4random_uniform(UInt32(centersCopy.count)))
-            
             let randCenter : CGPoint = centersCopy[random] as! CGPoint
             item.center = randCenter
             
@@ -145,51 +169,68 @@ class ViewController: UIViewController,UIGestureRecognizerDelegate {
         calculateNeighbours()
     }
     
-    //MARK:- Reset board
-    private func resetBoard() {
-        
-        //Remove previous tiles
-        for item in viewBoard.subviews {
-            item.removeFromSuperview()
-        }
-        
-        arrayTiles.removeAllObjects()
-        arrayTileCenters.removeAllObjects()
-    }
-    
     //MARK:- UIGestureRecognizerDelegate method
     func handleTap(recognizer: UITapGestureRecognizer) {
-        
+
         let view = recognizer.view
         if(view == nil) { return }
         
         //move tile
-        move(view: view!, tapped: true)
+        moveTile(view: view!, tapped: !isMoving)
     }
     
-    //MARK:- Move and Win Logic
-    
+    //MARK:- move and win logic
     // Move tile
-    func move(view : UIView, tapped:Bool) {
-        
-        let tapTileCenter = view.center
+    func moveTile(view : UIView, tapped:Bool) {
         
         if leftTiles.containsView(tile: view){
             
+            var count : Int = 0
+            var cgFloatX : CGFloat = 0
+            var isMoved : Bool = true
+
             for item in leftTiles {
                 
                 let item = item as! UIImageView
-                
                 var center = item.center
-                center.x += tileWidth
                 
+                if (!tapped){
+                    if count == 0 {
+
+                        if  blankTileCenter.x - center.x < tileWidth/2{
+                            // Update new postion
+                            cgFloatX =  CGFloat((Int(center.x/tileWidth) + 1)) * tileWidth - tileWidth/2
+                            isMoved = true
+                        }else{
+                            // back to original position
+                            cgFloatX = CGFloat((Int(center.x/tileWidth))) * tileWidth + tileWidth/2
+                            isMoved = false
+                        }
+                    }else{
+                        
+                        cgFloatX = cgFloatX - tileWidth
+                    }
+                }else{
+                 
+                    cgFloatX = center.x + tileWidth
+                }
+        
+                center.x = cgFloatX
                 UIView.animate(withDuration: 0.15, animations:{
                     item.center = center
                 })
+
+                count += 1
                 
-                if (item.center == view.center){
+                //Update blank tile
+                if item.center == view.center{
                     
-                    if (tapped){ blankTileCenter = tapTileCenter }
+                    // Don't update blank tile center if tile is back to position
+                    if isMoved {
+                        var blankCenter = blankTileCenter
+                        blankCenter?.x = cgFloatX - tileWidth
+                        blankTileCenter = blankCenter
+                    }
                     break
                 }
             }
@@ -197,19 +238,49 @@ class ViewController: UIViewController,UIGestureRecognizerDelegate {
         
         if rightTiles.containsView(tile: view){
             
+            var count : Int = 0
+            var cgFloatX : CGFloat = 0
+            var isMoved : Bool = true
+            
             for item in rightTiles {
                 
                 let item = item as! UIImageView
-                
                 var center = item.center
-                center.x -= tileWidth
+                
+                if (!tapped){
+                    if count == 0 {
+                        if  center.x - blankTileCenter.x < tileWidth/2{
+                            // Update new postion
+                            cgFloatX =  CGFloat((Int(center.x/tileWidth) + 1)) * tileWidth - tileWidth/2
+                            isMoved = true
+                        }else{
+                            // back to original position
+                            cgFloatX = CGFloat((Int(center.x/tileWidth))) * tileWidth + tileWidth/2
+                            isMoved = false
+                        }
+                    }else{
+                        cgFloatX = cgFloatX + tileWidth
+                    }
+                }else{
+                    cgFloatX = center.x - tileWidth
+                }
+
+                center.x = cgFloatX
                 UIView.animate(withDuration: 0.15, animations:{
                     item.center = center
                 })
                 
-                if (item.center == view.center){
+                count += 1
+                
+                //Update blank tile
+                if item.center == view.center{
                     
-                    if (tapped){ blankTileCenter = tapTileCenter }
+                    // Don't update blank tile center if tile is back to position
+                    if isMoved {
+                        var blankCenter = blankTileCenter
+                        blankCenter?.x = cgFloatX + tileWidth
+                        blankTileCenter = blankCenter
+                    }
                     break
                 }
             }
@@ -217,19 +288,49 @@ class ViewController: UIViewController,UIGestureRecognizerDelegate {
         
         if topTiles.containsView(tile: view){
             
+            var count : Int = 0
+            var cgFloatY : CGFloat = 0
+            var isMoved : Bool = true
+            
             for item in topTiles {
                 
                 let item = item as! UIImageView
-                
                 var center = item.center
-                center.y += tileWidth
+                
+                if (!tapped){
+                    if count == 0 {
+                        if  blankTileCenter.y - center.y < tileWidth/2{
+                            // Update new postion
+                            cgFloatY =  CGFloat((Int(center.y/tileWidth) + 1)) * tileWidth - tileWidth/2
+                            isMoved = true
+                        }else{
+                            // back to original position
+                            cgFloatY = CGFloat((Int(center.y/tileWidth))) * tileWidth + tileWidth/2
+                            isMoved = false
+                        }
+                    }else{
+                        cgFloatY = cgFloatY - tileWidth
+                    }
+                }else{
+                    cgFloatY = center.y + tileWidth
+                }
+                
+                center.y = cgFloatY
                 UIView.animate(withDuration: 0.15, animations:{
                     item.center = center
                 })
                 
-                if (item.center == view.center){
+                count += 1
+                
+                //Update blank tile
+                if item.center == view.center{
                     
-                    if (tapped){ blankTileCenter = tapTileCenter }
+                    // Don't update blank tile center if tile is back to position
+                    if isMoved {
+                        var blankCenter = blankTileCenter
+                        blankCenter?.y = cgFloatY - tileWidth
+                        blankTileCenter = blankCenter
+                    }
                     break
                 }
             }
@@ -237,28 +338,60 @@ class ViewController: UIViewController,UIGestureRecognizerDelegate {
         
         if bottomTiles.containsView(tile: view){
             
+            var count : Int = 0
+            var cgFloatY : CGFloat = 0
+            var isMoved : Bool = true
+            
             for item in bottomTiles {
                 
                 let item = item as! UIImageView
-                
                 var center = item.center
-                center.y -= tileWidth
+                
+                if (!tapped){
+                    if count == 0 {
+                        if  center.y - blankTileCenter.y < tileWidth/2{
+                            // Update new postion
+                            cgFloatY =  CGFloat((Int(center.y/tileWidth) + 1)) * tileWidth - tileWidth/2
+                            isMoved = true
+                        }else{
+                            // back to original position
+                            cgFloatY = CGFloat((Int(center.y/tileWidth))) * tileWidth + tileWidth/2
+                            isMoved = false
+                        }
+                    }else{
+                        cgFloatY = cgFloatY + tileWidth
+                    }
+                }else{
+                    cgFloatY = center.y - tileWidth
+                }
+                
+                center.y = cgFloatY
                 UIView.animate(withDuration: 0.15, animations:{
                     item.center = center
                 })
                 
-                if (item.center == view.center){
-                    
-                    if (tapped){ blankTileCenter = tapTileCenter }
+                count += 1
+                
+                //Update blank tile
+                if item.center == view.center{
+                    // Don't update blank tile center if tile is back to position
+                    if isMoved {
+                        var blankCenter = blankTileCenter
+                        blankCenter?.y = cgFloatY + tileWidth
+                        blankTileCenter = blankCenter
+                    }
                     break
                 }
             }
         }
         
+        //Check for win
         self.perform(#selector(self.checkForWin), with: nil, afterDelay: 0.5)
         
-        // Recalculate emty tile's neighbours
-        if (tapped){  calculateNeighbours() }
+        //print("after move : \(blankTileCenter)")
+        
+        // Recalculate empty tile's neighbours
+        calculateNeighbours()
     }
     
     func checkForWin() {
@@ -269,7 +402,7 @@ class ViewController: UIViewController,UIGestureRecognizerDelegate {
             let alertController = UIAlertController(title:"YOU WIN!!", message:"", preferredStyle: .alert)
             let replay = UIAlertAction(title: "Play Again", style: .default) { (action) in
                 
-                self.createUI(tileArray: self.arrayTileImages!)
+                self.resetBoard()
             }
             alertController.addAction(replay)
             self.present(alertController, animated: true) {}
@@ -301,68 +434,6 @@ class ViewController: UIViewController,UIGestureRecognizerDelegate {
         }
         return isWon
     }
-    
-//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        
-//        if let touch = touches.first{
-//            
-//            print("\(touch.location(in: viewBoard))")
-//            
-//            touchbeginPoint = touch.location(in: viewBoard)
-//            
-//            //touch?.view
-//        }
-//        super.touchesBegan(touches, with: event)
-//    }
-//    
-//    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        
-//        if let touch = touches.first{
-//            print("\(touch.location(in: viewBoard))")
-//            
-////            move(view: touch.view!, tapped: true)
-//        }
-//        super.touchesEnded(touches, with: event)
-//    }
-//    
-//    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        
-//        if let touch = touches.first{
-//            
-//            //print("\(touch)")
-//            
-//            let location = touch.location(in: viewBoard)
-//            let view = touch.view
-//            
-//            
-////            view?.center = location
-//            
-//            
-//            var center = location
-//            center.x = location.x
-//
-//            view?.center = CGPoint(x: location.x, y: (view?.center.y)!)
-//
-//            if leftTiles.containsView(tile: view!){
-//                
-//                for item in leftTiles {
-//                    
-//                    let item = item as! UIImageView
-//
-//                    var center = item.center
-//                    center.x += location.x - touchbeginPoint.x
-//                    item.center = center
-//                    
-//                    if (item.center == view?.center){
-//                        
-//                        //if (tapped){ blankTileCenter = tapTileCenter }
-//                        break
-//                    }
-//                }
-//            }
-//        }
-//        super.touchesMoved(touches, with: event)
-//    }
     
     //MARK:- Calculation
     //Calculate neighbour tiles around empty tile
@@ -437,5 +508,137 @@ class ViewController: UIViewController,UIGestureRecognizerDelegate {
             }
         }
         return nil
+    }
+}
+
+
+//MARK:- Touch events
+
+extension ViewController {
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        isMoving = false
+    }
+    
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        isMoving = true
+        
+        if let touch = touches.first{
+            
+            let location = touch.location(in: viewBoard)
+            let view = touch.view
+            
+            let  xVal = location.x - (view?.center.x)!
+            let  yVal = location.y - (view?.center.y)!
+            
+            if leftTiles.containsView(tile: view!){
+                
+                if xVal < 0 {  // left move not allowed
+                    return
+                }
+                
+                var preItemCenter : CGPoint = blankTileCenter
+                
+                for item in leftTiles {
+
+                    let item = item as! UIImageView
+                    
+                    var center = item.center
+                    center.x = (center.x + xVal >= preItemCenter.x) ? preItemCenter.x : center.x + xVal
+                    item.center = center
+                    
+                    preItemCenter.x -= tileWidth
+                    
+                    if item.center == view?.center{
+                        break
+                    }
+                }
+            }
+            
+            if rightTiles.containsView(tile: view!){
+                
+                if xVal > 0 {  // right move not allowed
+                    return
+                }
+                
+                var preItemCenter : CGPoint = blankTileCenter
+                for item in rightTiles {
+                    
+                    let item = item as! UIImageView
+                    
+                    var center = item.center
+                    center.x = (center.x + xVal <= preItemCenter.x) ? preItemCenter.x : center.x + xVal
+                    item.center = center
+                    
+                    preItemCenter.x += tileWidth
+                    
+                    if item.center == view?.center{
+                        break
+                    }
+                }
+            }
+            
+            if topTiles.containsView(tile: view!){
+                
+                if yVal < 0 {  // up move not allowed
+                    return
+                }
+                
+                var preItemCenter : CGPoint = blankTileCenter
+                for item in topTiles {
+                    
+                    let item = item as! UIImageView
+                    
+                    var center = item.center
+                    center.y = (center.y + yVal >= preItemCenter.y) ? preItemCenter.y : center.y + yVal
+                    item.center = center
+                    
+                    preItemCenter.y -= tileWidth
+                    
+                    if item.center == view?.center{
+                        break
+                    }
+                }
+            }
+            
+            if bottomTiles.containsView(tile: view!){
+                
+                if yVal > 0 {  // down move not allowed
+                    return
+                }
+                
+                var preItemCenter : CGPoint = blankTileCenter
+                for item in bottomTiles {
+                    
+                    let item = item as! UIImageView
+                    
+                    var center = item.center
+                    center.y = (center.y + yVal <= preItemCenter.y) ? preItemCenter.y : center.y + yVal
+                    item.center = center
+                    
+                    preItemCenter.y += tileWidth
+                    
+                    if item.center == view?.center{
+                        break
+                    }
+                }
+            }
+        }
+        
+        super.touchesMoved(touches, with: event)
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        isMoving = false
+        
+        if let touch = touches.first{
+
+            let view = touch.view
+            //move tile
+            moveTile(view: view!, tapped: isMoving)
+        }
+        super.touchesEnded(touches, with: event)
     }
 }
