@@ -66,7 +66,9 @@ class ViewController: UIViewController,UIGestureRecognizerDelegate {
         if (puzzleImage == nil) { return nil}
         
         let arraCroppedImages : NSMutableArray = NSMutableArray()
-        tileWidth = puzzleImage!.size.width as CGFloat / 2
+
+        //Get tile width
+        tileWidth = puzzleImage!.size.width as CGFloat * UIScreen.main.scale / 4
 
         // update view board width
         viewboardWidthConstraints.constant = 4 * tileWidth
